@@ -15,13 +15,11 @@ import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-//import org.bukkit.entity.Player;
 
-public class bcVote extends JavaPlugin{
-	
+public class bcVote extends JavaPlugin{	
 	bcvPlayerListener pListener = new bcvPlayerListener();
 	private Logger log;
-
+	//private boolean debugMessages;
 	
     // default configuration
     private double reqYesVotes = 0.05, minAgree = 0.5;
@@ -29,7 +27,7 @@ public class bcVote extends JavaPlugin{
 	private int voteTime = 30000, voteFailDelay = 30000, votePassDelay = 50000, voteRemindCount = 2;
 	private boolean bedVote = false;
 	private boolean perma = false;
-	//private boolean debugMessages;
+
 	private static final String defaultConfig = 
 		"# At least 'required-yes-percentage'*peopleOnServer people must vote yes, and there must be more people that voted yes than no" + '\n' + 
 		"required-yes-percentage 5" + '\n' +
@@ -40,13 +38,10 @@ public class bcVote extends JavaPlugin{
 		"reminders 2" + '\n' +
 		"bedvote yes" + '\n' +
 		"permanent no";
-	
-	
-	
+		
 	@Override
 	public void onDisable() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stu		
 	}
 
 	@Override
@@ -56,15 +51,12 @@ public class bcVote extends JavaPlugin{
 		printlog("BlockCraftVote loaded");
 		
 		loadConfigFile();
-
 		
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Priority.Normal, this);
 	   
 		//push config values
-		pListener.config(reqYesVotes, minAgree, permaOffset, voteTime, voteFailDelay, votePassDelay, voteRemindCount, perma, bedVote);
-
-	    
+		pListener.config(reqYesVotes, minAgree, permaOffset, voteTime, voteFailDelay, votePassDelay, voteRemindCount, perma, bedVote);	    
 	}
 	
 	@Override
@@ -138,9 +130,7 @@ public class bcVote extends JavaPlugin{
 				}
 			}
 		}
-	}
-
-	
+	}	
 	
 }
 

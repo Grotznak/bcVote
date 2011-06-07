@@ -2,8 +2,6 @@ package Grotznak.bcVote;
 
 import java.text.DecimalFormat;
 
-
-
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -16,9 +14,9 @@ public class bcvPlayerListener extends PlayerListener{
 	private bcVote plugin;
 	
 	public Votings dayvote = new Votings("day");
-	public Votings nightvote = new Votings("n");
-	public Votings sunvote = new Votings("s");
-	public Votings rainvote = new Votings("r");
+	public Votings nightvote = new Votings("night");
+	public Votings sunvote = new Votings("sun");
+	public Votings rainvote = new Votings("rain");
 	
 	private double reqYesVotes, minAgree;
 	private int permaOffset; 
@@ -27,7 +25,6 @@ public class bcvPlayerListener extends PlayerListener{
 	//private static final int nightstart = 14000;
 	//private Set<String> canStartVotes = null;
 
- 
 	public void config(double reqYesVotes, double minAgree, int permaOffset, int voteTime, int voteFailDelay, int votePassDelay, int voteRemindCount, boolean perma, boolean bedVote){
 	    	this.reqYesVotes = reqYesVotes;
 	    	this.minAgree = minAgree;
@@ -39,8 +36,7 @@ public class bcvPlayerListener extends PlayerListener{
 	    	//this.perma = perma;
 	    	//this.bedVote = bedVote;
 	    }
-	
-	
+		
 	private World currentWorld = null;
 	
 	public boolean onPlayerCommand(CommandSender sender, Command command, String label, String[] args){
@@ -62,16 +58,16 @@ public class bcvPlayerListener extends PlayerListener{
 		
 		double nicetime =roundTwoDecimals ((player.getWorld().getTime()%24000)/1000);
 		 
-		
 		String[] split = args;
 		if (!label.equalsIgnoreCase("vote")) return false;
 
 		if (split.length == 0 || (split.length == 1 && split[0].equalsIgnoreCase("help"))){
 			sender.sendMessage(ChatColor.AQUA + "voting commands");			
-			sender.sendMessage(ChatColor.AQUA + "/vote day -- start a vote for daylight");
-			sender.sendMessage(ChatColor.AQUA + "/vote night -- this message");
+			sender.sendMessage(ChatColor.AQUA + "/vote day -- vote for daylight");
+			sender.sendMessage(ChatColor.AQUA + "/vote night -- let the night begin");
 			sender.sendMessage(ChatColor.AQUA + "/vote sun -- stop the rain");
-			sender.sendMessage(ChatColor.AQUA + "/vote <yourvotename> [describtion] -- vote on whatever you want");
+			sender.sendMessage(ChatColor.AQUA + "/vote rain -- for singing");
+			sender.sendMessage(ChatColor.AQUA + "/vote undo -- unregister from all votes");
 			return true;
 		}
 		
@@ -141,20 +137,27 @@ public class bcvPlayerListener extends PlayerListener{
 				 sunvote.dovote(currentWorld,player,false,myconfig);
 			}
 		}
+		if (split[0].equalsIgnoreCase("undo")){	
+			unregisterPlayerVotes(player);
+		}
 		return true;
 	}
 	
 	//delete leaving Users from permavotes
 	public void onPlayerQuit(PlayerQuitEvent event){
+		Player p = event.getPlayer();	
+		unregisterPlayerVotes(p);
+		//p.getServer().broadcastMessage(ChatColor.AQUA + "Player " + p.getDisplayName() + " deleted from all persistent votes (bcVote)");
+	}
+	
+	public void unregisterPlayerVotes(Player p){
 		Object[] myconfig = {
 				 reqYesVotes, minAgree
-				};	
-		Player p = event.getPlayer();
+				};
 		dayvote.dovote(p.getWorld(),p,false,myconfig);	
 		nightvote.dovote(p.getWorld(),p,false,myconfig);
 		sunvote.dovote(p.getWorld(),p,false,myconfig);
 		rainvote.dovote(p.getWorld(),p,false,myconfig);
-		//p.getServer().broadcastMessage(ChatColor.AQUA + "Player " + p.getDisplayName() + " deleted from all persistent votes (bcVote)");
 	}
 	
 	private boolean isDay(long currenttime, int offset){

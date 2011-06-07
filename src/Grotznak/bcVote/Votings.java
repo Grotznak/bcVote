@@ -57,10 +57,10 @@ public class Votings {
 	
 		      Double allvotes = yescount + nocount;
 			   voter.sendMessage("Currently there are " + yescount + " YES and " +nocount + " NO of "+allcount+ " Total. ");
-			   voter.sendMessage("There are "+ (yescount / allcount )*100  + " % yes Votes (min) and a majority of " + ((yescount/nocount)/allvotes)*100 + " % Votes");
+			   voter.sendMessage("There are "+ (yescount / allcount )*100  + " % yes Votes (min) and a majority of " + ((allvotes/yescount))*100 + " % Votes");
 			   voter.sendMessage("For are succesfull Vote you need "+ req*100 + " % yes Votes (min) and a majority of " + min*100+ " % Votes");
 	
-			 if (((yescount / allcount ) > req ) &&  (((yescount/nocount)/allvotes)>=min)){
+			 if (((yescount / allcount ) > req ) &&  ((allvotes/yescount)>=min)){
 				 //voter.sendMessage("send true");
 				 return true;
 				 

@@ -1,0 +1,11 @@
+name: bcVote
+main: Grotznak.bcVote.bcVote
+version: 0.4
+
+authors:
+  - Grotznak
+
+commands:
+    vote:
+        description: Vote for stuff
+        usage: /vote [name]

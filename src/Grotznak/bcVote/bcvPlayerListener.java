@@ -101,7 +101,7 @@ public class bcvPlayerListener extends PlayerListener{
 			if (isDay(now,permaOffset)){				
 				if (nightvote.dovote(currentWorld,player,true,myconfig)){
 				 currentWorld.setTime(permaOffset+12000);
-				 sender.sendMessage(ChatColor.AQUA + "Changing time" +now);
+				 sender.sendMessage(ChatColor.AQUA + "Changing time");
 				 dayvote.dovote(currentWorld,player,false,myconfig);
 				}
 			} else {	

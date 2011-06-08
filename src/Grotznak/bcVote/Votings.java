@@ -28,7 +28,7 @@ public class Votings {
        this.all = s.matchPlayer("");
        
 	   if (null==this.yes) {
-		   		   this.yes = s.matchPlayer("");
+		   this.yes = s.matchPlayer("");
 		   this.yes.clear();	   		   
 	   }
 	   
@@ -91,7 +91,8 @@ public class Votings {
     
     public void sync (World world, Server s){
     	//this.all = s.matchPlayer("");
-    	//s.broadcastMessage("Sync ALL Votes:"); 
+    	//s.broadcastMessage("Sync ALL Votes:");
+    	if (!this.yes.isEmpty()){
     	for (Player item: this.yes) {
     		//s.broadcastMessage("Sync YES Votes:"+ item.getDisplayName()); 
 	    		if (!this.all.contains(item)){
@@ -101,6 +102,8 @@ public class Votings {
 	    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "found, OK");
 	    		}
     		}
+    	}
+    	if (!this.no.isEmpty()){
     	for (Player item: this.no) {
     		//s.broadcastMessage("Sync no Votes:"+ item.getDisplayName()); 
 	    		if (!this.all.contains(item)){
@@ -110,7 +113,7 @@ public class Votings {
 	    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "found, OK");
 	    		}
     		}	
-    	
+    	}
     	
     }
 

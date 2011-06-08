@@ -145,8 +145,9 @@ public class bcvPlayerListener extends PlayerListener{
 	
 	//delete leaving Users from permavotes
 	public void onPlayerQuit(PlayerQuitEvent event){
-		Player p = event.getPlayer();	
-		unregisterPlayerVotes(p);
+		//Player p = event.getPlayer();
+		//maybe not needet due resync on vote
+		//unregisterPlayerVotes(p);
 		//p.getServer().broadcastMessage(ChatColor.AQUA + "Player " + p.getDisplayName() + " deleted from all persistent votes (bcVote)");
 	}
 	

@@ -92,27 +92,36 @@ public class Votings {
     public void sync (World world, Server s){
     	//this.all = s.matchPlayer("");
     	//s.broadcastMessage("Sync ALL Votes:");
+    	List<Player> delthis = s.matchPlayer("");
+    	delthis.clear();
+    	
     	if (!this.yes.isEmpty()){
-    	for (Player item: this.yes) {
-    		//s.broadcastMessage("Sync YES Votes:"+ item.getDisplayName()); 
-	    		if (!this.all.contains(item)){
-	    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "not found, deleting");
-	    			this.yes.remove(item);
-	    		} else {
-	    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "found, OK");
+	    	for (Player item: this.yes) {
+	    		//s.broadcastMessage("Sync YES Votes:"+ item.getDisplayName()); 
+		    		if (!this.all.contains(item)){
+		    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "not found, deleting");
+		    			delthis.add(item);
+		    		} 
 	    		}
-    		}
+	    	for (Player item: delthis) {
+	    		this.yes.remove(item);
+	    	}
+	    	delthis.clear();
     	}
     	if (!this.no.isEmpty()){
-    	for (Player item: this.no) {
-    		//s.broadcastMessage("Sync no Votes:"+ item.getDisplayName()); 
-	    		if (!this.all.contains(item)){
-	    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "not found, deleting");
-	    			this.no.remove(item);
-	    		} else {
-	    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "found, OK");
+	    	for (Player item: this.no) {
+	    		//s.broadcastMessage("Sync no Votes:"+ item.getDisplayName()); 
+		    		if (!this.all.contains(item)){
+		    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "not found, deleting");
+		    			delthis.add(item);
+		    		} else {
+		    		//	s.broadcastMessage("-:"+ item.getDisplayName()+ "found, OK");
+		    		}
 	    		}
-    		}	
+	    	for (Player item: delthis) {
+	    		this.no.remove(item);
+	    	}
+	    	delthis.clear();
     	}
     	
     }

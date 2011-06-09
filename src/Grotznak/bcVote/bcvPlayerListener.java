@@ -79,11 +79,12 @@ public class bcvPlayerListener extends PlayerListener{
 			if (!isDay(now,permaOffset)){				
 				if (dayvote.dovote(currentWorld,player,true,myconfig,LANG)){
 				 currentWorld.setTime(permaOffset);
-				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_TIME_CHANGE"));
+				 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_TIME_CHANGE"));
 				 nightvote.dovote(currentWorld,player,false,myconfig,LANG);
 				}
 			} else {
-				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_DAY_ALREADY") + " " + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
+				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_DAY_ALREADY"));
+				 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
 				 nightvote.dovote(currentWorld,player,false,myconfig,LANG);
 			}
 		}
@@ -94,12 +95,13 @@ public class bcvPlayerListener extends PlayerListener{
 			now =  (now % 24000); // one day lasts 24000
 			if (isDay(now,permaOffset)){				
 				if (nightvote.dovote(currentWorld,player,true,myconfig,LANG)){
-				 currentWorld.setTime(permaOffset+12000);
-				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_TIME_CHANGE"));
+				 currentWorld.setTime(permaOffset+14000);
+				 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_TIME_CHANGE"));
 				 dayvote.dovote(currentWorld,player,false,myconfig,LANG);
 				}
 			} else {	
-				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_NIGHT_ALREADY") + " " + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
+				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_NIGHT_ALREADY"));
+				 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
 				 dayvote.dovote(currentWorld,player,false,myconfig,LANG);
 			}
 		}
@@ -109,11 +111,12 @@ public class bcvPlayerListener extends PlayerListener{
 			if (!isSun(currentWorld)){				
 				if (sunvote.dovote(currentWorld,player,true,myconfig,LANG)){
 				 currentWorld.setWeatherDuration(1);
-				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_WEATHER_CHANGE"));
+				 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_WEATHER_CHANGE"));
 				 rainvote.dovote(currentWorld,player,false,myconfig,LANG);
 				}
 			} else {				 
-				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_SUN_ALREADY") + " " + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
+				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_SUN_ALREADY"));
+				 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
 				 rainvote.dovote(currentWorld,player,false,myconfig,LANG);
 			}
 		}
@@ -123,11 +126,12 @@ public class bcvPlayerListener extends PlayerListener{
 				if (rainvote.dovote(currentWorld,player,true,myconfig,LANG)){
 				 currentWorld.setStorm(true);
 				 currentWorld.setWeatherDuration(4000);
-				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_WEATHER_CHANGE"));
+				 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_WEATHER_CHANGE"));
 				 sunvote.dovote(currentWorld,player,false,myconfig,LANG);
 				}
 			} else {				 
-				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_RAIN_ALREADY") + " " + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
+				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_RAIN_ALREADY"));			
+				 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");
 				 sunvote.dovote(currentWorld,player,false,myconfig,LANG);
 			}
 		}

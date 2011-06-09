@@ -57,9 +57,10 @@ public class bcVote extends JavaPlugin{
 	     "VOTE_RAIN=You've voted for rain"  + '\n' +
 	     "VOTE_RAIN_ALLREAD=It's still raining. Youre vote is counted anyway"  + '\n' +
 	     "VOTE_TIME_CHANGE=Changing time..."  + '\n' +
-	     "SUM_HEAD=head" + '\n' +
-	     "SUM_BODY=body" + '\n' +
-	     "SUM_FOOT=foot" + '\n' +
+	     "SUM_HEAD=There are %yes% YES votes and %no% NO votes of %all% total now. " + '\n' +
+	     "SUM_BODY=%votes% % voted at all and a fraction of %yespercentage% % Voted YES " + '\n' +
+	     "SUM_FOOT=For are succesfull Vote you need %req% % yes Votes (min) and a majority of %min% % Votes" + '\n' +
+	     "TRANSLATION=translated by the same guy" + '\n' +
 	     "" 
 		;
 	

@@ -64,9 +64,23 @@ public class Votings {
 			  Double nocount = (double) this.no.size();
 	
 		      Double allvotes = yescount + nocount;
-		       voter.sendMessage( LANG.get("SUM_HEAD"));
-			   voter.sendMessage( LANG.get("SUM_BODY"));
-			   voter.sendMessage( LANG.get("SUM_FOOT"));
+		      
+		      String head = LANG.get("SUM_HEAD");
+		      head = head.replaceAll("%yes%",yescount.toString());
+		      head = head.replaceAll("%no%",nocount.toString());
+		      head = head.replaceAll("%all%",allcount.toString());
+		      
+		      String body = LANG.get("SUM_BODY");
+		      body = body.replaceAll("%votes%", String.valueOf(Math.round((yescount / allcount )*100)));
+		      body = body.replaceAll("%yespercentage%", String.valueOf(Math.round((yescount/allvotes)*100)));
+
+		      String foot = LANG.get("SUM_FOOT");
+		      foot = foot.replaceAll("%req%", String.valueOf(Math.round(req*100)));
+		      foot = foot.replaceAll("%min%", String.valueOf(Math.round(min*100)));
+		      
+		       voter.sendMessage( head);
+			   voter.sendMessage( body);
+			   voter.sendMessage( foot);
 			  // voter.sendMessage("Currently there are " + yescount + " YES and " +nocount + " NO of "+allcount+ " Total. ");
 			  //  voter.sendMessage("There are "+ Math.round((yescount / allcount )*100)  + " % yes Votes (min) and a majority of " + Math.round((yescount/allvotes)*100) + " % Votes");
 			  //  voter.sendMessage("For are succesfull Vote you need "+ req*100 + " % yes Votes (min) and a majority of " + min*100+ " % Votes");

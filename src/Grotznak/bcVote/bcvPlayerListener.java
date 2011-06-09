@@ -66,6 +66,7 @@ public class bcvPlayerListener extends PlayerListener{
 		
 		if(split[0].equalsIgnoreCase("info")){
 			sender.sendMessage(ChatColor.AQUA + "BlockCraft-Voting created by Grotznak");
+			sender.sendMessage(ChatColor.AQUA + LANG.get("TRANSLATION"));
 			sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " " + nicetime + " ("+player.getWorld().getName()+")");
 			sender.sendMessage(ChatColor.AQUA + "visit us at www.blockcraft.de");
 			return true;

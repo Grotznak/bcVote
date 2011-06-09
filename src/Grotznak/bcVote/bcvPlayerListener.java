@@ -85,6 +85,7 @@ public class bcvPlayerListener extends PlayerListener{
 			} else {
 				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_DAY_ALREADY"));
 				 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
+				 dayvote.dovote(currentWorld,player,true,myconfig,LANG);
 				 nightvote.dovote(currentWorld,player,false,myconfig,LANG);
 			}
 		}
@@ -102,6 +103,7 @@ public class bcvPlayerListener extends PlayerListener{
 			} else {	
 				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_NIGHT_ALREADY"));
 				 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
+				 nightvote.dovote(currentWorld,player,true,myconfig,LANG);
 				 dayvote.dovote(currentWorld,player,false,myconfig,LANG);
 			}
 		}
@@ -111,12 +113,14 @@ public class bcvPlayerListener extends PlayerListener{
 			if (!isSun(currentWorld)){				
 				if (sunvote.dovote(currentWorld,player,true,myconfig,LANG)){
 				 currentWorld.setWeatherDuration(1);
+				 currentWorld.setStorm(false);
 				 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_WEATHER_CHANGE"));
 				 rainvote.dovote(currentWorld,player,false,myconfig,LANG);
 				}
 			} else {				 
 				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_SUN_ALREADY"));
 				 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
+				 sunvote.dovote(currentWorld,player,true,myconfig,LANG);
 				 rainvote.dovote(currentWorld,player,false,myconfig,LANG);
 			}
 		}
@@ -132,6 +136,7 @@ public class bcvPlayerListener extends PlayerListener{
 			} else {				 
 				 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_RAIN_ALREADY"));			
 				 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");
+				 rainvote.dovote(currentWorld,player,true,myconfig,LANG);
 				 sunvote.dovote(currentWorld,player,false,myconfig,LANG);
 			}
 		}

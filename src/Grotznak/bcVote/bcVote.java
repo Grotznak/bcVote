@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -23,25 +24,49 @@ public class bcVote extends JavaPlugin{
 	
     // default configuration
     private double reqYesVotes = 0.05, minAgree = 0.5;
-	private int permaOffset = 0; 
-	private int voteTime = 30000, voteFailDelay = 30000, votePassDelay = 50000, voteRemindCount = 2;
-	private boolean bedVote = false;
-	private boolean perma = false;
+	private int permaOffset = 0;
+	private String guiLang = "english";
 
+	//default config text file 
 	private static final String defaultConfig = 
 		"# At least 'required-yes-percentage'*peopleOnServer people must vote yes, and there must be more people that voted yes than no" + '\n' + 
 		"required-yes-percentage 5" + '\n' +
 	 	"minimum-agree-percentage 50" + '\n' +
-		"vote-fail-delay 30" + '\n' +
-		"vote-pass-delay 50" + '\n' +
-		"vote-time 30" + '\n' +
-		"reminders 2" + '\n' +
-		"bedvote yes" + '\n' +
-		"permanent no";
+	 	"guiLang english"
+		;
+
+	//language config
+    public Hashtable<String,String> LANG;
+
+	//default lang text file
+	private static final String defaultLang = 		
+	     "VOTING_COMMANDS_HEAD=Commands:"  + '\n' +
+	     "VOTING_COMMANDS_VOTE_DESC_DAY=-- Vote for Daylight"  + '\n' +
+	     "VOTING_COMMANDS_VOTE_DESC_NIGHT=-- Vote for Nightfall"  + '\n' +
+	     "VOTING_COMMANDS_VOTE_DESC_SUN=-- Vote for Sunshine"  + '\n' +
+	     "VOTING_COMMANDS_VOTE_DESC_RAIN=-- Vote for Rain"  + '\n' +
+	     "VOTING_COMMANDS_VOTE_DESC_UNDO=-- undo (reset) all you Votings to default (no)"  + '\n' +
+	     "INFO_TIME=current time:"  + '\n' +
+	     "INFO_TIME_CLOCK=o'clock"  + '\n' +
+	     "VOTE_DAY=You've voted for day"  + '\n' +
+	     "VOTE_DAY_ALLREAD=It's day allready. Youre vote is counted anyway"  + '\n' +
+	     "VOTE_NIGHT=You've voted for night"  + '\n' +
+	     "VOTE_NIGHT_ALLREAD=It's night allready. Youre vote is counted anyway"  + '\n' +
+	     "VOTE_SUN=You've voted for sun"  + '\n' +
+	     "VOTE_SUN_ALLREAD=The sun is shining. Youre vote is counted anyway"  + '\n' +
+	     "VOTE_RAIN=You've voted for rain"  + '\n' +
+	     "VOTE_RAIN_ALLREAD=It's still raining. Youre vote is counted anyway"  + '\n' +
+	     "VOTE_TIME_CHANGE=Changing time..."  + '\n' +
+	     "SUM_HEAD=head" + '\n' +
+	     "SUM_BODY=body" + '\n' +
+	     "SUM_FOOT=foot" + '\n' +
+	     "" 
+		;
+	
 		
 	@Override
 	public void onDisable() {
-		// TODO Auto-generated method stu		
+		
 	}
 
 	@Override
@@ -51,12 +76,14 @@ public class bcVote extends JavaPlugin{
 		printlog("BlockCraftVote loaded");
 		
 		loadConfigFile();
+		loadLanguageFile();
 		
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Priority.Normal, this);
 	   
 		//push config values
-		pListener.config(reqYesVotes, minAgree, permaOffset, voteTime, voteFailDelay, votePassDelay, voteRemindCount, perma, bedVote);	    
+		pListener.config(reqYesVotes, minAgree, permaOffset, LANG);
+		//pListener.language();
 	}
 	
 	@Override
@@ -98,6 +125,7 @@ public class bcVote extends JavaPlugin{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				loadConfigFile();
 	        }
 		
 	}
@@ -113,24 +141,48 @@ public class bcVote extends JavaPlugin{
 				}else if (contents[0].equals("required-yes-percentage")){
 						reqYesVotes = Integer.parseInt(contents[1]);
 						reqYesVotes /= 100;
-				}else if (contents[0].equals("vote-fail-delay")){
-						voteFailDelay = Integer.parseInt(contents[1]) * 1000;
-				}else if (contents[0].equals("vote-pass-delay")){
-						votePassDelay = Integer.parseInt(contents[1]) * 1000;
-				}else if (contents[0].equals("vote-time")){
-						voteTime = Integer.parseInt(contents[1]) * 1000;
-				}else if (contents[0].equals("reminders")){
-						voteRemindCount = Integer.parseInt(contents[1]);
-				}else if (contents[0].equals("permanent")){
-						perma = contents[1].equals("yes");
-				}else if (contents[0].equals("bedvote")){
-						bedVote = contents[1].equals("yes");
-				}else if (contents[0].equals("debug-messages")){
-					//debugMessages = contents[1].equals("yes");
+				}else if (contents[0].equals("guiLang")){
+						guiLang = (contents[1]);
 				}
 			}
 		}
-	}	
+	}
+	
+	
+	public void loadLanguageFile(){
+		//check for configurations files or create them
+		 File folder = new File("plugins" + File.separator + "bcVote");
+	        if (!folder.exists()) {
+	            folder.mkdir();
+	        }
+	        
+	        File langFile = new File(folder.getAbsolutePath() + File.separator + guiLang + ".lang");
+	        if (langFile.exists()){
+	        	printlog("loading language file: " + guiLang);
+	        	Scanner sc = null;
+	        	try {
+					sc = new Scanner(langFile);
+					LANG = bcVoteConfig.langGenerate(sc);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+	        }else{
+	        	printlog("creating language file: " + guiLang);
+	        	BufferedWriter out = null;
+	        	try {
+					langFile.createNewFile();
+					out = new BufferedWriter(new FileWriter(langFile));
+					out.write(defaultLang);
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				loadLanguageFile();	
+	        }
+		
+	}
+	
+
 	
 }
 

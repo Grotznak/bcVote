@@ -1,5 +1,6 @@
 package Grotznak.bcVote;
 
+import java.util.Hashtable;
 import java.util.List;
 
 import org.bukkit.Server;
@@ -20,7 +21,7 @@ public class Votings {
 		this.no =null; 		 
 	}
 
-    public boolean dovote(World world, Player voter, boolean vote, Object[] myconfig) {
+    public boolean dovote(World world, Player voter, boolean vote, Object[] myconfig,Hashtable<String,String> LANG) {
     	
     	
        Server s = voter.getServer();
@@ -63,9 +64,12 @@ public class Votings {
 			  Double nocount = (double) this.no.size();
 	
 		      Double allvotes = yescount + nocount;
-			   voter.sendMessage("Currently there are " + yescount + " YES and " +nocount + " NO of "+allcount+ " Total. ");
-			   voter.sendMessage("There are "+ Math.round((yescount / allcount )*100)  + " % yes Votes (min) and a majority of " + Math.round((yescount/allvotes)*100) + " % Votes");
-			   voter.sendMessage("For are succesfull Vote you need "+ req*100 + " % yes Votes (min) and a majority of " + min*100+ " % Votes");
+		       voter.sendMessage( LANG.get("SUM_HEAD"));
+			   voter.sendMessage( LANG.get("SUM_BODY"));
+			   voter.sendMessage( LANG.get("SUM_FOOT"));
+			  // voter.sendMessage("Currently there are " + yescount + " YES and " +nocount + " NO of "+allcount+ " Total. ");
+			  //  voter.sendMessage("There are "+ Math.round((yescount / allcount )*100)  + " % yes Votes (min) and a majority of " + Math.round((yescount/allvotes)*100) + " % Votes");
+			  //  voter.sendMessage("For are succesfull Vote you need "+ req*100 + " % yes Votes (min) and a majority of " + min*100+ " % Votes");
 				   
 			 if (((yescount / allcount ) > req ) &&  ((yescount/allvotes)>=min)){
 				 //voter.sendMessage("send true");

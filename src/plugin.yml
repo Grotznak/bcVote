@@ -1,6 +1,6 @@
 name: bcVote
 main: Grotznak.bcVote.bcVote
-version: 0.5.1
+version: 0.6.0
 
 authors:
   - Grotznak
@@ -9,3 +9,5 @@ commands:
     vote:
         description: Vote for stuff
         usage: /vote [name]
+        aliases: [bcvote]
+        permission: bcvote.*

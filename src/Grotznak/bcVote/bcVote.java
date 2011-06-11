@@ -17,9 +17,14 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
+import org.bukkit.plugin.Plugin;
+
 public class bcVote extends JavaPlugin{	
 	bcvPlayerListener pListener = new bcvPlayerListener();
 	private Logger log;
+    public static PermissionHandler permissionHandler;
 	//private boolean debugMessages;
 	
     // default configuration
@@ -62,6 +67,7 @@ public class bcVote extends JavaPlugin{
 	     "SUM_BODY=%votes% % voted at all and a fraction of %yespercentage% % Voted YES " + '\n' +
 	     "SUM_FOOT=For are succesfull Vote you need %req% % yes Votes (min) and a majority of %min% % Votes" + '\n' +
 	     "TRANSLATION=translated by the same guy" + '\n' +
+	     "VOTE_NO_PERMISSION=You have no permission to vote for that" + '\n' +
 	     "" 
 		;
 	
@@ -80,6 +86,8 @@ public class bcVote extends JavaPlugin{
 		loadConfigFile();
 		loadLanguageFile();
 		
+		setupPermissions();
+		 
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Priority.Normal, this);
 	   
@@ -184,7 +192,18 @@ public class bcVote extends JavaPlugin{
 		
 	}
 	
+	private void setupPermissions() {
+	      Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
 
+	      if (this.permissionHandler == null) {
+	          if (permissionsPlugin != null) {
+	              this.permissionHandler = ((Permissions) permissionsPlugin).getHandler();
+	              printlog("found permisionsPlugin");
+	          } else {
+	              log.info("Permission system not detected, defaulting to OP");
+	          }
+	      }
+	  }
 	
 }
 

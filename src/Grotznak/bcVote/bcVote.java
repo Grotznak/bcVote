@@ -198,7 +198,7 @@ public class bcVote extends JavaPlugin{
 	      if (this.permissionHandler == null) {
 	          if (permissionsPlugin != null) {
 	              this.permissionHandler = ((Permissions) permissionsPlugin).getHandler();
-	              printlog("found permisionsPlugin");
+	              printlog("found Permisions plugin");
 	          } else {
 	              log.info("Permission system not detected, defaulting to OP");
 	          }

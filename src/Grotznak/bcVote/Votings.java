@@ -21,12 +21,12 @@ public class Votings {
 		this.no =null; 		 
 	}
 
-    public boolean dovote(World world, Player voter, boolean vote, Object[] myconfig,Hashtable<String,String> LANG) {
-    	
-    	
+    public boolean dovote(World world, Player voter, boolean vote, Object[] myconfig,Hashtable<String,String> LANG,String name) {
+       this.name = name;    	
        Server s = voter.getServer();
       
        this.all = s.matchPlayer("");
+       
        
 	   if (null==this.yes) {
 		   this.yes = s.matchPlayer("");
@@ -35,10 +35,10 @@ public class Votings {
 	   
 	   if (null==this.no) {
    		   this.no = s.matchPlayer("");
-		   //this.no.clear();	   		   
+		   this.no.clear();	   		   
 	   }
 	   
-	   
+	   clrNonPermission(world, s);
 		  
 	   Double req = (Double) myconfig[0];
 	   Double min = (Double) myconfig[1];
@@ -142,6 +142,53 @@ public class Votings {
 	    	delthis.clear();
     	}
     	
+    }
+    
+    public void clrNonPermission (World world, Server s){
+    	List<Player> delthis = s.matchPlayer("");
+    	delthis.clear();
+    	String perString = "";
+ 
+    	if (this.name == "Time") {
+    		perString = "bcvote.time";
+    	}
+    	if (this.name == "Weather") {
+    		perString = "bcvote.weather";
+    	}
+
+    	if (!this.yes.isEmpty()){
+	    	for (Player item: this.yes) {
+	    		    if (this.yes.contains(item)&&!bcVote.permissionHandler.has(item, perString)){ 
+		    			delthis.add(item);
+		    		}    
+	    		}
+	    	for (Player item: delthis) {
+	    		this.yes.remove(item);
+	    	}
+	    	delthis.clear();
+    	}
+    	if (!this.no.isEmpty()){
+	    	for (Player item: this.no) {	    		
+	    		if (this.no.contains(item)&&!bcVote.permissionHandler.has(item, perString)){
+		    			delthis.add(item);
+		    		} 
+	    		}
+	    	for (Player item: delthis) {
+	    		this.no.remove(item);
+	    	}
+	    	delthis.clear();
+    	}
+    	if (!this.all.isEmpty()){
+	    	for (Player item: this.all) {	    		
+	    		if (this.all.contains(item)&&!bcVote.permissionHandler.has(item, perString)){
+		    			delthis.add(item);
+		    		} 
+	    		}
+	    	for (Player item: delthis) {
+	    		this.all.remove(item);
+	    	}
+	    	delthis.clear();
+    	}
     }
 
 }

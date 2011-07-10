@@ -1,5 +1,6 @@
 package Grotznak.bcVote;
 
+
 import java.util.Hashtable;
 import java.util.List;
 
@@ -8,20 +9,24 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 
+
 public class Votings {
-	public String name;
-	public List<Player> all;
-	public List<Player> yes;
-	public List<Player> no;
+// Object[] myt = {};
+		public String name;
+		public List<Player> all;
+		public List<Player> yes;
+		public List<Player> no;
+ 
 	
-	public Votings(String name) {
+	public Votings( String name) {
+	//this.myt. = "test";
 		this.name = name;
 		this.all = null;
 		this.yes = null;
 		this.no =null; 		 
 	}
 
-    public boolean dovote(World world, Player voter, boolean vote, Object[] myconfig,Hashtable<String,String> LANG,String name) {
+    public boolean dovote(World world, Player voter, boolean vote, Hashtable<String,String> CONFIG,Hashtable<String,String> LANG,String name) {
        this.name = name;    	
        Server s = voter.getServer();
       
@@ -40,8 +45,8 @@ public class Votings {
 	   
 	   clrNonPermission(world, s);
 		  
-	   Double req = (Double) myconfig[0];
-	   Double min = (Double) myconfig[1];
+	   Double req = Double.valueOf( CONFIG.get("required-yes-percentage") )/100;
+	   Double min = Double.valueOf( CONFIG.get("minimum-agree-percentage") )/100;
 	   Double allcount = (double) this.all.size();
 	   
 	   if (vote){		  
@@ -52,11 +57,7 @@ public class Votings {
 			  if(this.no.contains(voter)){
 				  this.no.remove(voter);
 			  }
-			  /* voter.sendMessage("starter" + voter.getDisplayName());
-			  voter.sendMessage("all" + this.all);
-			  voter.sendMessage("yesvotes" + this.yes);
-			  voter.sendMessage("novotes" + this.no);
-			  voter.sendMessage("config" + myconfig[0] + ", "+ myconfig[1] );*/
+
 			  
 			  sync(world, s);  
 			  
@@ -78,12 +79,10 @@ public class Votings {
 		      foot = foot.replaceAll("%req%", String.valueOf(Math.round(req*100)));
 		      foot = foot.replaceAll("%min%", String.valueOf(Math.round(min*100)));
 		      
-		       voter.sendMessage( head);
-			   voter.sendMessage( body);
-			   voter.sendMessage( foot);
-			  // voter.sendMessage("Currently there are " + yescount + " YES and " +nocount + " NO of "+allcount+ " Total. ");
-			  //  voter.sendMessage("There are "+ Math.round((yescount / allcount )*100)  + " % yes Votes (min) and a majority of " + Math.round((yescount/allvotes)*100) + " % Votes");
-			  //  voter.sendMessage("For are succesfull Vote you need "+ req*100 + " % yes Votes (min) and a majority of " + min*100+ " % Votes");
+		      voter.sendMessage( head);
+			  voter.sendMessage( body);
+			  voter.sendMessage( foot);
+			 
 				   
 			 if (((yescount / allcount ) > req ) &&  ((yescount/allvotes)>=min)){
 				 //voter.sendMessage("send true");

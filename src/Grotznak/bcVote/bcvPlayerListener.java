@@ -2,6 +2,8 @@ package Grotznak.bcVote;
 
 import java.text.DecimalFormat;
 import java.util.Hashtable;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -9,33 +11,32 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerQuitEvent;
+
 
 public class bcvPlayerListener extends PlayerListener{
+	
+	private static final String World = null;
 	private bcVote plugin;
+	
 	
 	public Votings dayvote = new Votings("day");
 	public Votings nightvote = new Votings("night");
 	public Votings sunvote = new Votings("sun");
 	public Votings rainvote = new Votings("rain");
 	
-	private double reqYesVotes, minAgree;
 	private int permaOffset; 
+	private Hashtable<String, String> CONFIG;
 	private Hashtable<String, String> LANG;
-
-	public void config(double reqYesVotes, double minAgree, int permaOffset,Hashtable<String, String> LANG){
-	    	this.reqYesVotes = reqYesVotes;
-	    	this.minAgree = minAgree;
-	    	this.permaOffset = permaOffset;
+	
+	public void config(Hashtable<String, String> CONFIG,Hashtable<String, String> LANG){
+	    	this.CONFIG = CONFIG;
 	        this.LANG = LANG;
 	    }
 		
 	private World currentWorld = null;
 	
+	
 	public boolean onPlayerCommand(CommandSender sender, Command command, String label, String[] args){
-		 Object[] myconfig = {
-				 reqYesVotes, minAgree
-				};	
 		
 		Player player = (Player) sender;
 		if (sender instanceof Player) {
@@ -74,22 +75,32 @@ public class bcvPlayerListener extends PlayerListener{
 		
 		if (split[0].equalsIgnoreCase("day")){
 			if (bcVote.permissionHandler.has(player, "bcvote.time")) {			  
-				long now = currentWorld.getTime();			
-				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_DAY"));
+				
+				long now = currentWorld.getTime();	
 				now =  (now % 24000); // one day lasts 24000
+				sender.getServer().broadcastMessage(CONFIG.get("broadcast-votes"));
+				
+				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_DAY"));
+				
 				if (!isDay(now,permaOffset)){				
-					if (dayvote.dovote(currentWorld,player,true,myconfig,LANG,"Time")){
-					 
+					if (dayvote.dovote(currentWorld,player,true,CONFIG,LANG,"Time")){					 
 					 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_TIME_CHANGE"));
-					 
-					 currentWorld.setTime(permaOffset);					 
-					 nightvote.dovote(currentWorld,player,false,myconfig,LANG,"Time");
+					 currentWorld.setTime(permaOffset);					 					 
+					 nightvote.dovote(currentWorld,player,false,CONFIG,LANG,"Time");
 					}
 				} else {
 					 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_DAY_ALREADY"));
 					 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
-					 dayvote.dovote(currentWorld,player,true,myconfig,LANG,"Time");
-					 nightvote.dovote(currentWorld,player,false,myconfig,LANG,"Time");
+					 dayvote.dovote(currentWorld,player,true,CONFIG,LANG,"Time");
+					 nightvote.dovote(currentWorld,player,false,CONFIG,LANG,"Time");
+				}
+				
+				if (CONFIG.get("broadcast-votes").equals("true")) {
+					  String broadcast = LANG.get("VOTE_BROADCAST_PERMISSION");
+				      broadcast = broadcast.replaceAll("%yes%",""+ dayvote.yes.size());
+				      broadcast = broadcast.replaceAll("%no%",""+ dayvote.no.size());
+				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"day" +ChatColor.AQUA );
+					  sender.getServer().broadcastMessage(ChatColor.AQUA + broadcast);
 				}
 			}
 			else {
@@ -99,20 +110,30 @@ public class bcvPlayerListener extends PlayerListener{
 		
 		if (split[0].equalsIgnoreCase("night")){
 			if (bcVote.permissionHandler.has(player, "bcvote.time")) {
-				long now = currentWorld.getTime();			
-				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_NIGHT"));
+				long now = currentWorld.getTime();
 				now =  (now % 24000); // one day lasts 24000
+				
+				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_NIGHT"));
+				
 				if (isDay(now,permaOffset)){				
-					if (nightvote.dovote(currentWorld,player,true,myconfig,LANG,"Time")){
+					if (nightvote.dovote(currentWorld,player,true,CONFIG,LANG,"Time")){
 					 currentWorld.setTime(permaOffset+14000);
 					 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_TIME_CHANGE"));
-					 dayvote.dovote(currentWorld,player,false,myconfig,LANG,"Time");
+					 dayvote.dovote(currentWorld,player,false,CONFIG,LANG,"Time");
 					}
 				} else {	
 					 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_NIGHT_ALREADY"));
 					 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
-					 nightvote.dovote(currentWorld,player,true,myconfig,LANG,"Time");
-					 dayvote.dovote(currentWorld,player,false,myconfig,LANG,"Time");
+					 nightvote.dovote(currentWorld,player,true,CONFIG,LANG,"Time");
+					 dayvote.dovote(currentWorld,player,false,CONFIG,LANG,"Time");
+				}
+				
+				if (CONFIG.get("broadcast-votes").equals("true")) {
+					  String broadcast = LANG.get("VOTE_BROADCAST_PERMISSION");
+				      broadcast = broadcast.replaceAll("%yes%",""+ nightvote.yes.size());
+				      broadcast = broadcast.replaceAll("%no%",""+ nightvote.no.size());
+				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"night" +ChatColor.AQUA );
+					  sender.getServer().broadcastMessage(ChatColor.AQUA + broadcast);
 				}
 			}
 			else {
@@ -124,19 +145,26 @@ public class bcvPlayerListener extends PlayerListener{
 			if (bcVote.permissionHandler.has(player, "bcvote.weather")) {	
 				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_SUN") );
 				if (!isSun(currentWorld)){				
-					if (sunvote.dovote(currentWorld,player,true,myconfig,LANG,"Weather")){
+					if (sunvote.dovote(currentWorld,player,true,CONFIG,LANG,"Weather")){
 					 currentWorld.setWeatherDuration(1);
 					 currentWorld.setStorm(false);
 					 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_WEATHER_CHANGE"));
-					 rainvote.dovote(currentWorld,player,false,myconfig,LANG,"Weather");
+					 rainvote.dovote(currentWorld,player,false,CONFIG,LANG,"Weather");
 					}
 				} else {				 
 					 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_SUN_ALREADY"));
 					 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");			
-					 sunvote.dovote(currentWorld,player,true,myconfig,LANG,"Weather");
-					 rainvote.dovote(currentWorld,player,false,myconfig,LANG,"Weather");
+					 sunvote.dovote(currentWorld,player,true,CONFIG,LANG,"Weather");
+					 rainvote.dovote(currentWorld,player,false,CONFIG,LANG,"Weather");
 				}
+				if (CONFIG.get("broadcast-votes").equals("true")) {
+					  String broadcast = LANG.get("VOTE_BROADCAST_PERMISSION");
+				      broadcast = broadcast.replaceAll("%yes%",""+ sunvote.yes.size());
+				      broadcast = broadcast.replaceAll("%no%",""+ sunvote.no.size());
+				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"sunshine" +ChatColor.AQUA );
+					  sender.getServer().broadcastMessage(ChatColor.AQUA + broadcast);				}
 			}
+			
 			else {
 				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_NO_PERMISSION"));
 			}
@@ -145,17 +173,24 @@ public class bcvPlayerListener extends PlayerListener{
 			if (bcVote.permissionHandler.has(player, "bcvote.weather")) {
 				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_RAIN") );
 				if (isSun(currentWorld)){				
-					if (rainvote.dovote(currentWorld,player,true,myconfig,LANG,"Weather")){
+					if (rainvote.dovote(currentWorld,player,true,CONFIG,LANG,"Weather")){
 					 currentWorld.setStorm(true);
 					 currentWorld.setWeatherDuration(4000);
 					 sender.getServer().broadcastMessage(ChatColor.AQUA + LANG.get("VOTE_WEATHER_CHANGE"));
-					 sunvote.dovote(currentWorld,player,false,myconfig,LANG,"Weather");
+					 sunvote.dovote(currentWorld,player,false,CONFIG,LANG,"Weather");
 					}
 				} else {				 
 					 sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_RAIN_ALREADY"));			
 					 sender.sendMessage(ChatColor.AQUA + LANG.get("INFO_TIME") + " "  + nicetime + " " +  LANG.get("INFO_TIME_CLOCK") + " ("+player.getWorld().getName()+")");
-					 rainvote.dovote(currentWorld,player,true,myconfig,LANG,"Weather");
-					 sunvote.dovote(currentWorld,player,false,myconfig,LANG,"Weather");
+					 rainvote.dovote(currentWorld,player,true,CONFIG,LANG,"Weather");
+					 sunvote.dovote(currentWorld,player,false,CONFIG,LANG,"Weather");
+				}
+				if (CONFIG.get("broadcast-votes").equals("true")) {
+					  String broadcast = LANG.get("VOTE_BROADCAST_PERMISSION");
+				      broadcast = broadcast.replaceAll("%yes%",""+ nightvote.yes.size());
+				      broadcast = broadcast.replaceAll("%no%",""+ nightvote.no.size());
+				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"night" +ChatColor.AQUA );
+					  sender.getServer().broadcastMessage(ChatColor.AQUA + broadcast);
 				}
 			}
 			else {
@@ -168,22 +203,14 @@ public class bcvPlayerListener extends PlayerListener{
 		return true;
 	}
 	
-	//delete leaving Users from permavotes
-	public void onPlayerQuit(PlayerQuitEvent event){
-		//Player p = event.getPlayer();
-		//maybe not needet due resync on vote
-		//unregisterPlayerVotes(p);
-		//p.getServer().broadcastMessage(ChatColor.AQUA + "Player " + p.getDisplayName() + " deleted from all persistent votes (bcVote)");
-	}
+
 	
 	public void unregisterPlayerVotes(Player p){
-		Object[] myconfig = {
-				 reqYesVotes, minAgree
-				};
-		dayvote.dovote(p.getWorld(),p,false,myconfig,LANG,"Time");	
-		nightvote.dovote(p.getWorld(),p,false,myconfig,LANG,"Time");
-		sunvote.dovote(p.getWorld(),p,false,myconfig,LANG,"Weather");
-		rainvote.dovote(p.getWorld(),p,false,myconfig,LANG,"Weather");
+
+		dayvote.dovote(p.getWorld(),p,false,CONFIG,LANG,"Time");	
+		nightvote.dovote(p.getWorld(),p,false,CONFIG,LANG,"Time");
+		sunvote.dovote(p.getWorld(),p,false,CONFIG,LANG,"Weather");
+		rainvote.dovote(p.getWorld(),p,false,CONFIG,LANG,"Weather");
 	}
 	
 	private boolean isDay(long currenttime, int offset){

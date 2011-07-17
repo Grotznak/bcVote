@@ -64,7 +64,7 @@ public class bcVote extends JavaPlugin{
 	     "SUM_FOOT=For are succesfull Vote you need %req% % yes Votes (min) and a majority of %min% % Votes" + '\n' +
 	     "TRANSLATION=translated by the same guy" + '\n' +
 	     "VOTE_NO_PERMISSION=You have no permission to vote for that" + '\n' +
-	     "VOTE_BROADCAST_PERMISSION=Someone has started a vote for %vote%. Currently there are %yes% YES-votes and %no% NO-votes." + '\n' +
+	     "VOTE_BROADCAST=Someone has started a vote for %vote%. Currently there are %yes% YES-votes and %no% NO-votes." + '\n' +
 	     "" 
 		;
 	

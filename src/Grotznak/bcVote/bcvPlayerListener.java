@@ -2,8 +2,7 @@ package Grotznak.bcVote;
 
 import java.text.DecimalFormat;
 import java.util.Hashtable;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -15,7 +14,7 @@ import org.bukkit.event.player.PlayerListener;
 
 public class bcvPlayerListener extends PlayerListener{
 	
-	private static final String World = null;
+
 	private bcVote plugin;
 	
 	
@@ -53,7 +52,7 @@ public class bcvPlayerListener extends PlayerListener{
 		double nicetime =roundTwoDecimals ((player.getWorld().getTime()%24000)/1000);
 		 
 		String[] split = args;
-		if (!label.equalsIgnoreCase("vote")) return false;
+		if ((!label.equalsIgnoreCase("vote"))&&(!label.equalsIgnoreCase("bcvote"))) return false;
 
 		if (split.length == 0 || (split.length == 1 && split[0].equalsIgnoreCase("help"))){
 			sender.sendMessage(ChatColor.AQUA + LANG.get("VOTING_COMMANDS_HEAD"));			
@@ -78,7 +77,7 @@ public class bcvPlayerListener extends PlayerListener{
 				
 				long now = currentWorld.getTime();	
 				now =  (now % 24000); // one day lasts 24000
-				sender.getServer().broadcastMessage(CONFIG.get("broadcast-votes"));
+				//sender.getServer().broadcastMessage(CONFIG.get("broadcast-votes"));
 				
 				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_DAY"));
 				
@@ -96,7 +95,7 @@ public class bcvPlayerListener extends PlayerListener{
 				}
 				
 				if (CONFIG.get("broadcast-votes").equals("true")) {
-					  String broadcast = LANG.get("VOTE_BROADCAST_PERMISSION");
+					  String broadcast = LANG.get("VOTE_BROADCAST");
 				      broadcast = broadcast.replaceAll("%yes%",""+ dayvote.yes.size());
 				      broadcast = broadcast.replaceAll("%no%",""+ dayvote.no.size());
 				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"day" +ChatColor.AQUA );
@@ -129,7 +128,7 @@ public class bcvPlayerListener extends PlayerListener{
 				}
 				
 				if (CONFIG.get("broadcast-votes").equals("true")) {
-					  String broadcast = LANG.get("VOTE_BROADCAST_PERMISSION");
+					  String broadcast = LANG.get("VOTE_BROADCAST");
 				      broadcast = broadcast.replaceAll("%yes%",""+ nightvote.yes.size());
 				      broadcast = broadcast.replaceAll("%no%",""+ nightvote.no.size());
 				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"night" +ChatColor.AQUA );
@@ -158,7 +157,7 @@ public class bcvPlayerListener extends PlayerListener{
 					 rainvote.dovote(currentWorld,player,false,CONFIG,LANG,"Weather");
 				}
 				if (CONFIG.get("broadcast-votes").equals("true")) {
-					  String broadcast = LANG.get("VOTE_BROADCAST_PERMISSION");
+					  String broadcast = LANG.get("VOTE_BROADCAST");
 				      broadcast = broadcast.replaceAll("%yes%",""+ sunvote.yes.size());
 				      broadcast = broadcast.replaceAll("%no%",""+ sunvote.no.size());
 				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"sunshine" +ChatColor.AQUA );
@@ -186,10 +185,10 @@ public class bcvPlayerListener extends PlayerListener{
 					 sunvote.dovote(currentWorld,player,false,CONFIG,LANG,"Weather");
 				}
 				if (CONFIG.get("broadcast-votes").equals("true")) {
-					  String broadcast = LANG.get("VOTE_BROADCAST_PERMISSION");
-				      broadcast = broadcast.replaceAll("%yes%",""+ nightvote.yes.size());
-				      broadcast = broadcast.replaceAll("%no%",""+ nightvote.no.size());
-				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"night" +ChatColor.AQUA );
+					  String broadcast = LANG.get("VOTE_BROADCAST");
+				      broadcast = broadcast.replaceAll("%yes%",""+ rainvote.yes.size());
+				      broadcast = broadcast.replaceAll("%no%",""+ rainvote.no.size());
+				      broadcast = broadcast.replaceAll("%vote%",ChatColor.WHITE +"rain" +ChatColor.AQUA );
 					  sender.getServer().broadcastMessage(ChatColor.AQUA + broadcast);
 				}
 			}

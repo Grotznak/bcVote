@@ -14,14 +14,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
-import org.bukkit.plugin.Plugin;
+
 
 public class bcVote extends JavaPlugin{	
 	bcvPlayerListener pListener = new bcvPlayerListener();
 	private Logger log;
-    public static PermissionHandler permissionHandler;
+    //public static PermissionHandler permissionHandler;
 	//private boolean debugMessages;
 	
   
@@ -84,7 +82,7 @@ public class bcVote extends JavaPlugin{
 		loadLanguageFile();		
 		pListener.config(CONFIG,LANG);
 		
-		setupPermissions();
+		//setupPermissions();
 		 
 		//PluginManager pm = getServer().getPluginManager();
 		//pm.registerEvent(Event.Type.PLAYER_QUIT, pListener, Priority.Normal, this);
@@ -171,7 +169,7 @@ public class bcVote extends JavaPlugin{
 	        }
 		
 	}
-	
+	/*
 	private void setupPermissions() {
 	      Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
 
@@ -184,7 +182,7 @@ public class bcVote extends JavaPlugin{
 	          }
 	      }
 	  }
-	
+	*/
 }
 
 

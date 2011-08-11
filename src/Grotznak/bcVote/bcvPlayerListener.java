@@ -73,7 +73,7 @@ public class bcvPlayerListener extends PlayerListener{
 		}
 		
 		if (split[0].equalsIgnoreCase("day")){
-			if (bcVote.permissionHandler.has(player, "bcvote.time")) {			  
+			if (player.hasPermission("bcvote.time") || player.hasPermission("bcvote.*")) {			  
 				
 				long now = currentWorld.getTime();	
 				now =  (now % 24000); // one day lasts 24000
@@ -108,7 +108,7 @@ public class bcvPlayerListener extends PlayerListener{
 		}
 		
 		if (split[0].equalsIgnoreCase("night")){
-			if (bcVote.permissionHandler.has(player, "bcvote.time")) {
+			if (player.hasPermission("bcvote.time") || player.hasPermission("bcvote.*")) {
 				long now = currentWorld.getTime();
 				now =  (now % 24000); // one day lasts 24000
 				
@@ -141,7 +141,7 @@ public class bcvPlayerListener extends PlayerListener{
 		}
 		
 		if (split[0].equalsIgnoreCase("sun")){				
-			if (bcVote.permissionHandler.has(player, "bcvote.weather")) {	
+			if (player.hasPermission("bcvote.weather") || player.hasPermission("bcvote.*") ) {	
 				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_SUN") );
 				if (!isSun(currentWorld)){				
 					if (sunvote.dovote(currentWorld,player,true,CONFIG,LANG,"Weather")){
@@ -169,7 +169,7 @@ public class bcvPlayerListener extends PlayerListener{
 			}
 		}
 		if (split[0].equalsIgnoreCase("rain")){				
-			if (bcVote.permissionHandler.has(player, "bcvote.weather")) {
+			if (player.hasPermission("bcvote.weather") || player.hasPermission("bcvote.*")) {
 				sender.sendMessage(ChatColor.AQUA + LANG.get("VOTE_RAIN") );
 				if (isSun(currentWorld)){				
 					if (rainvote.dovote(currentWorld,player,true,CONFIG,LANG,"Weather")){

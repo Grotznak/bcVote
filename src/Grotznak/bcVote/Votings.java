@@ -157,7 +157,7 @@ public class Votings {
 
     	if (!this.yes.isEmpty()){
 	    	for (Player item: this.yes) {
-	    		    if (this.yes.contains(item)&&!bcVote.permissionHandler.has(item, perString)){ 
+	    		    if (this.yes.contains(item)&&!(item.hasPermission(perString) || item.hasPermission("bcvote.*"))){ 
 		    			delthis.add(item);
 		    		}    
 	    		}
@@ -168,7 +168,7 @@ public class Votings {
     	}
     	if (!this.no.isEmpty()){
 	    	for (Player item: this.no) {	    		
-	    		if (this.no.contains(item)&&!bcVote.permissionHandler.has(item, perString)){
+	    		if (this.no.contains(item)&&!(item.hasPermission(perString) || item.hasPermission("bcvote.*"))){ 
 		    			delthis.add(item);
 		    		} 
 	    		}
@@ -179,7 +179,7 @@ public class Votings {
     	}
     	if (!this.all.isEmpty()){
 	    	for (Player item: this.all) {	    		
-	    		if (this.all.contains(item)&&!bcVote.permissionHandler.has(item, perString)){
+	    		if (this.all.contains(item)&&!(item.hasPermission(perString) || item.hasPermission("bcvote.*"))){ 
 		    			delthis.add(item);
 		    		} 
 	    		}

@@ -1,13 +1,13 @@
 name: bcVote
 main: Grotznak.bcVote.bcVote
-version: 0.7.0
+version: 0.8.0
 
 authors:
   - Grotznak
 
 commands:
     vote:
-        description: Vote for stuff
+        description: Vote for weather or time changes
         usage: /vote [name]
         aliases: [bcvote]
         permission: bcvote.*

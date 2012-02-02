@@ -1,12 +1,9 @@
 name: bcVote
 main: Grotznak.bcVote.bcVote
-version: 0.8.2
-
-authors:
-  - Grotznak
-
+version: 0.9.0
+depend: [Vault]
+description: >
+             Vote for day/night or sun/rain
 commands:
-    vote:
-        description: vote for stuff
-        usage: /<command> [stuff]
-        permissions: bcvote.*
+  vote:
+    description: vote for stuff

@@ -1,0 +1,11 @@
+Blockcraft Voting Plugin
+www.blockcraft.de
+
+Changelog:
+- V 0.9
+	- Vault is supportet and NEEDED by now
+	- added ecnomoc support, you may charge your player money for succesfull votes
+	- cofigurable rain length
+	
+TODO:	
+	- ability to reload config files (general and language)

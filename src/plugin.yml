@@ -1,9 +1,21 @@
 name: bcVote
 main: Grotznak.bcVote.bcVote
-version: 0.9.0
+version: 0.1.0
+authors: [Grotznak]
+website: http://www.diemamaschimpft.de
 depend: [Vault]
 description: >
-             Vote for day/night or sun/rain
+             Vote for day, night, sun or rain
+load: startup
 commands:
-  vote:
-    description: vote for stuff
+  bcvote:
+    description: Vote 
+    usage: |
+           /<command> - Displays vote information
+permissions:
+  bcvote.wheather:
+    description: Vote for wheather changes.
+    default: op
+  bcvote.time:
+    description: Vote for time changes.
+    default: op

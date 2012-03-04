@@ -1,6 +1,6 @@
 name: bcVote
 main: Grotznak.bcVote.bcVote
-version: 0.1.0
+version: 1.0.0
 authors: [Grotznak]
 website: http://www.diemamaschimpft.de
 depend: [Vault]
